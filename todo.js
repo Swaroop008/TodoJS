@@ -1,16 +1,46 @@
-let todoItemsContainer=document.getElementById("todoItemsContainer");
+let todoItemsContainer = document.getElementById("todoItemsContainer");
+let todoList = [
+  {
+    text: "Learn HTML"
+  },
+  {
+    text: "Learn CSS"
+  },
+  {
+    text: "Learn JavaScript"
+  }
+];
 
-let todoElement=document.createElement('li');
+function createAndAppendTodo(todo) {
+  let todoElement = document.createElement("li");
+  todoElement.classList.add("todo-item-container", "d-flex", "flex-row");
+  todoItemsContainer.appendChild(todoElement);
 
-todoElement.classList.add("todo-item-container","d-flex","flex-row");
-todoItemsContainer.appendChild(todoElement);
+  let inputElement = document.createElement("input");
+  inputElement.type = "checkbox";
+  inputElement.id = "checkboxInput";
+  inputElement.classList.add("checkbox-input");
+  todoElement.appendChild(inputElement);
 
-console.log(todoItemsContainer);
+  let labelContainer = document.createElement("div");
+  labelContainer.classList.add("label-container", "d-flex", "flex-row");
+  todoElement.appendChild(labelContainer);
 
-let labelContainer = document.createElement("div");
-labelContainer.classList.add("label-container", "d-flex", "flex-row");
-todoElement.appendChild(labelContainer);
+  let labelElement = document.createElement("label");
+  labelElement.setAttribute("for", "checkboxInput");
+  labelElement.classList.add("checkbox-label");
+  labelElement.textContent = todo.text;
+  labelContainer.appendChild(labelElement);
 
-console.log(todoItemsContainer);
+  let deleteIconContainer = document.createElement("div");
+  deleteIconContainer.classList.add("delete-icon-container");
+  labelContainer.appendChild(deleteIconContainer);
 
+  let deleteIcon = document.createElement("i");
+  deleteIcon.classList.add("far", "fa-trash-alt", "delete-icon");
+  deleteIconContainer.appendChild(deleteIcon);
+}
 
+for (let todo of todoList) {
+  createAndAppendTodo(todo);
+}
