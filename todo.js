@@ -1,40 +1,39 @@
 let todoItemsContainer = document.getElementById("todoItemsContainer");
 let addTodoButton = document.getElementById("addTodoButton");
+let saveTodoButton = document.getElementById("saveTodoButton");
 
-let todoList = [
-  {
-    text: "Learn HTML",
-    uniqueNo: 1
-  },
-  {
-    text: "Learn CSS",
-    uniqueNo: 2
-  },
-  {
-    text: "Learn JavaScript",
-    uniqueNo: 3
+function getTodoListFromLocalStorage() {
+  let stringifiedTodoList = localStorage.getItem("todoList");
+  let parsedTodoList = JSON.parse(stringifiedTodoList);
+  if (parsedTodoList === null) {
+    return [];
+  } else {
+    return parsedTodoList;
   }
-];
+}
 
+let todoList = getTodoListFromLocalStorage();
 let todosCount = todoList.length;
+
+saveTodoButton.onclick = function () {
+  localStorage.setItem("todoList", JSON.stringify(todoList));
+};
 
 function onTodoStatusChange(checkboxId, labelId) {
   let checkboxElement = document.getElementById(checkboxId);
   let labelElement = document.getElementById(labelId);
-
-  labelElement.classList.toggle('checked');
+  labelElement.classList.toggle("checked");
 }
 
 function onDeleteTodo(todoId) {
   let todoElement = document.getElementById(todoId);
-
   todoItemsContainer.removeChild(todoElement);
 }
 
 function createAndAppendTodo(todo) {
-  let todoId = 'todo' + todo.uniqueNo;
-  let checkboxId = 'checkbox' + todo.uniqueNo;
-  let labelId = 'label' + todo.uniqueNo;
+  let todoId = "todo" + todo.uniqueNo;
+  let checkboxId = "checkbox" + todo.uniqueNo;
+  let labelId = "label" + todo.uniqueNo;
 
   let todoElement = document.createElement("li");
   todoElement.classList.add("todo-item-container", "d-flex", "flex-row");
@@ -47,7 +46,7 @@ function createAndAppendTodo(todo) {
 
   inputElement.onclick = function() {
     onTodoStatusChange(checkboxId, labelId);
-  }
+  };
 
   inputElement.classList.add("checkbox-input");
   todoElement.appendChild(inputElement);
@@ -85,7 +84,7 @@ function onAddTodo() {
   let userInputElement = document.getElementById("todoUserInput");
   let userInputValue = userInputElement.value;
 
-  if(userInputValue === ""){
+  if (userInputValue === "") {
     alert("Enter Valid Text");
     return;
   }
@@ -94,13 +93,13 @@ function onAddTodo() {
 
   let newTodo = {
     text: userInputValue,
-    uniqueNo: todosCount
+    uniqueNo: todosCount,
   };
-
+  todoList.push(newTodo);
   createAndAppendTodo(newTodo);
   userInputElement.value = "";
 }
 
-addTodoButton.onclick = function(){
+addTodoButton.onclick = function () {
   onAddTodo();
-}
+};
